@@ -81,6 +81,23 @@ export const CURRENT_HOLDINGS: Investment[] = [
     notes: 'Physical gold (pool allocated) via ABC Bullion. 2 buys: 0.75oz Jan 29, 0.15oz Feb 3, 2026. Priced per troy ounce in AUD.',
     dataSource: 'manual'
   }
+  {
+    id: 'sharesight_cash',
+    assetName: 'Cash Reserve',
+    ticker: '',
+    category: 'cash',
+    riskLevel: 'safe',
+    marketScenarios: ['high-interest', 'recession'],
+    purchaseDate: '2026-02-11T00:00:00.000Z',
+    quantity: 1,
+    purchasePrice: 4348,
+    fees: 0,
+    totalCost: 4348,
+    currentPrice: 4348,
+    currency: 'AUD',
+    notes: 'Uninvested cash balance in brokerage account.',
+    dataSource: 'manual'
+  }
 ];
 
 // All 97 raw trades for historical record
