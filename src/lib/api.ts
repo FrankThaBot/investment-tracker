@@ -129,34 +129,23 @@ export class PriceService {
   
   // Utility to normalize ticker symbols for different APIs
   static normalizeSymbol(symbol: string, category: string): string {
-    // Convert common symbols to Yahoo Finance format
     const normalized = symbol.toUpperCase().trim();
     
-    // Crypto symbols for Yahoo Finance
+    // If it already contains a dash (e.g. BTC-AUD), return as-is
+    if (normalized.includes('-')) return normalized;
+    
+    // Crypto symbols - append -USD if bare ticker
     if (category === 'crypto') {
       const cryptoMapping: Record<string, string> = {
         'BTC': 'BTC-USD',
-        'BITCOIN': 'BTC-USD',
         'ETH': 'ETH-USD',
-        'ETHEREUM': 'ETH-USD',
         'XRP': 'XRP-USD',
-        'RIPPLE': 'XRP-USD',
         'SOL': 'SOL-USD',
-        'SOLANA': 'SOL-USD',
         'ADA': 'ADA-USD',
-        'CARDANO': 'ADA-USD',
-        'DOT': 'DOT1-USD',
-        'POLKADOT': 'DOT1-USD',
-        'MATIC': 'MATIC-USD',
-        'POLYGON': 'MATIC-USD',
-        'AVAX': 'AVAX-USD',
-        'AVALANCHE': 'AVAX-USD'
       };
-      
       return cryptoMapping[normalized] || `${normalized}-USD`;
     }
     
-    // For stocks, return as-is (Yahoo Finance usually handles them correctly)
     return normalized;
   }
   

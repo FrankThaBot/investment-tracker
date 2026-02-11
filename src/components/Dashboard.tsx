@@ -82,9 +82,8 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
       
       const priceData = await PriceService.fetchMultiplePrices(symbolsToFetch);
       
-      // Also fetch gold oz AUD and BTC-AUD for derived pricing
+      // Also fetch gold oz AUD for derived pricing
       let goldOzAud: number | null = null;
-      let btcAud: number | null = null;
       try {
         const extraResp = await fetch('/api/prices?symbols=GOLD_OZ_AUD');
         if (extraResp.ok) {
@@ -93,9 +92,9 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
         }
       } catch { /* ignore */ }
 
-      // Update investments with new prices
+      // First pass: update investments with direct ticker prices
+      let btcAud: number | null = null;
       updatedInvestments.forEach((investment, index) => {
-        // Direct ticker lookup
         if (investment.ticker) {
           const normalizedSymbol = PriceService.normalizeSymbol(investment.ticker, investment.category);
           const priceInfo = priceData[normalizedSymbol];
@@ -107,28 +106,29 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
               lastUpdated: priceInfo.lastUpdated,
               dataSource: 'yahoo'
             };
-            // Save BTC-AUD price for IBTC derivation
             if (normalizedSymbol === 'BTC-AUD') btcAud = priceInfo.price;
           }
         }
-        
-        // Derived: IBTC tracks ~0.0001 BTC per unit (approximate NAV from BTC price)
+      });
+
+      // Second pass: derived prices (need BTC-AUD from first pass)
+      updatedInvestments.forEach((investment, index) => {
+        // IBTC: derive from BTC-AUD price
+        // IBTC NAV ratio: ~0.0001006 BTC per unit (calibrated from Sharesight data)
         if (investment.id === 'sharesight_ibtc' && btcAud) {
-          // IBTC NAV roughly tracks BTC. Last known: 520 units @ $9.45 when BTC ~$94k AUD
-          // Ratio: ~0.0001006 BTC per IBTC unit
           const ibtcPrice = btcAud * 0.0001006;
           updatedInvestments[index] = {
-            ...investment,
+            ...updatedInvestments[index],
             currentPrice: ibtcPrice,
             lastUpdated: new Date().toISOString(),
             dataSource: 'manual'
           };
         }
         
-        // Derived: Gold per troy oz in AUD
+        // Gold: AUD per troy oz
         if (investment.id === 'sharesight_gold' && goldOzAud) {
           updatedInvestments[index] = {
-            ...investment,
+            ...updatedInvestments[index],
             currentPrice: goldOzAud,
             lastUpdated: new Date().toISOString(),
             dataSource: 'manual'
