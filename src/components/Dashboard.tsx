@@ -114,9 +114,9 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
       // Second pass: derived prices (need BTC-AUD from first pass)
       updatedInvestments.forEach((investment, index) => {
         // IBTC: derive from BTC-AUD price
-        // IBTC NAV ratio: ~0.0001006 BTC per unit (calibrated from Sharesight data)
+        // Bitcoin per share: 0.00009878 (from monochrome.au as of 10 Feb 2026)
         if (investment.id === 'sharesight_ibtc' && btcAud) {
-          const ibtcPrice = btcAud * 0.0001006;
+          const ibtcPrice = btcAud * 0.00009878;
           updatedInvestments[index] = {
             ...updatedInvestments[index],
             currentPrice: ibtcPrice,
