@@ -4,10 +4,20 @@ import { PriceData } from '@/types/investment';
 // Yahoo Finance API (unofficial but widely used)
 class YahooFinanceAPI {
   private static readonly BASE_URL = 'https://query1.finance.yahoo.com/v8/finance/chart';
+  // CORS proxy fallback for browser requests
+  private static readonly CORS_PROXY = 'https://corsproxy.io/?';
   
   static async fetchPrice(symbol: string): Promise<PriceData | null> {
     try {
-      const response = await fetch(`${this.BASE_URL}/${symbol}?interval=1d&range=1d`);
+      const directUrl = `${this.BASE_URL}/${symbol}?interval=1d&range=1d`;
+      let response: Response;
+      
+      try {
+        response = await fetch(directUrl);
+      } catch {
+        // CORS blocked - try proxy
+        response = await fetch(`${this.CORS_PROXY}${encodeURIComponent(directUrl)}`);
+      }
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

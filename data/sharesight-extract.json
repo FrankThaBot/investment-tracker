@@ -1,0 +1,92 @@
+{
+  "extracted": "2026-02-11",
+  "portfolio_value": 22005.53,
+  "holdings": [
+    {
+      "name": "Bitcoin",
+      "ticker": "BTC",
+      "category": "crypto",
+      "exchange": "CRYPTO",
+      "currency": "AUD",
+      "current_qty": 0.05000001,
+      "cost_base": 6202.06,
+      "risk": "speculative",
+      "trades": [
+        {"date": "2026-01-14", "type": "buy", "qty": 0.01006458, "price_per_unit": 155411.35, "fees": 14.85, "value": 1579.00},
+        {"date": "2026-01-21", "type": "buy", "qty": 0.01101619, "price_per_unit": 134815.08, "fees": 22.39, "value": 1507.54},
+        {"date": "2026-01-28", "type": "buy", "qty": 0.00191149, "price_per_unit": 129493.09, "fees": 2.48, "value": 250.00},
+        {"date": "2026-02-02", "type": "buy", "qty": 0.0086026, "price_per_unit": 115083.41, "fees": 9.98, "value": 1000.00},
+        {"date": "2026-02-04", "type": "buy", "qty": 0.00226065, "price_per_unit": 109492.74, "fees": 2.48, "value": 250.00},
+        {"date": "2026-02-08", "type": "buy", "qty": 0.0024698, "price_per_unit": 100220.57, "fees": 2.48, "value": 250.00},
+        {"date": "2026-02-11", "type": "buy", "qty": 0.00250557, "price_per_unit": 98789.80, "fees": 2.48, "value": 250.00},
+        {"date": "2026-02-11", "type": "buy", "qty": 0.00500813, "price_per_unit": 98849.17, "fees": 4.95, "value": 500.00},
+        {"date": "2026-02-11", "type": "buy", "qty": 0.006161, "price_per_unit": 98915.09, "fees": 6.09, "value": 615.51}
+      ]
+    },
+    {
+      "name": "ABC Bullion - Pool Allocated",
+      "ticker": "GOLD",
+      "category": "commodity",
+      "exchange": "OTHER",
+      "currency": "AUD",
+      "current_qty": 0.9,
+      "risk": "moderate",
+      "trades": [
+        {"date": "2026-01-29", "type": "buy", "qty": 0.75, "price_per_unit": 8018.80, "fees": 0, "value": 6014.10},
+        {"date": "2026-02-03", "type": "buy", "qty": 0.15, "price_per_unit": 7190.60, "fees": 0, "value": 1078.59}
+      ]
+    },
+    {
+      "name": "Monochrome Bitcoin ETF",
+      "ticker": "IBTC",
+      "category": "crypto",
+      "exchange": "CXA",
+      "currency": "AUD",
+      "current_qty": 520,
+      "risk": "speculative",
+      "note": "21 total trades, first 10 extracted below, 11 more needed",
+      "trades": [
+        {"date": "2025-10-31", "type": "buy", "qty": 20, "price_per_unit": 16.65, "fees": 0, "value": 333.00},
+        {"date": "2025-11-18", "type": "buy", "qty": 3, "price_per_unit": 13.94, "fees": 0, "value": 41.82},
+        {"date": "2025-11-28", "type": "buy", "qty": 10, "price_per_unit": 13.85, "fees": 0, "value": 138.50},
+        {"date": "2025-12-04", "type": "buy", "qty": 64, "price_per_unit": 14.09, "fees": 0, "value": 901.76},
+        {"date": "2025-12-12", "type": "buy", "qty": 52, "price_per_unit": 13.76, "fees": 0, "value": 715.52},
+        {"date": "2025-12-30", "type": "buy", "qty": 3, "price_per_unit": 12.96, "fees": 0, "value": 38.88},
+        {"date": "2026-01-05", "type": "buy", "qty": 30, "price_per_unit": 13.71, "fees": 0, "value": 411.30},
+        {"date": "2026-01-15", "type": "buy", "qty": 18, "price_per_unit": 14.47, "fees": 0, "value": 260.46},
+        {"date": "2026-01-21", "type": "buy", "qty": 32, "price_per_unit": 13.22, "fees": 0, "value": 423.04},
+        {"date": "2026-02-09", "type": "buy", "qty": 20, "price_per_unit": 10.13, "fees": 0, "value": 202.60}
+      ]
+    },
+    {
+      "name": "Vanguard MSCI Index International Shares ETF",
+      "ticker": "VGS",
+      "category": "equity",
+      "exchange": "ASX",
+      "currency": "AUD",
+      "current_qty": 40,
+      "cost_base": 5962.20,
+      "risk": "moderate",
+      "trades": [
+        {"date": "2024-03-19", "type": "buy", "qty": 116, "price_per_unit": 122.21, "fees": 14.95, "value": 14191.31},
+        {"date": "2024-04-02", "type": "buy", "qty": 47, "price_per_unit": 125.11, "fees": 14.95, "value": 5895.12},
+        {"date": "2024-07-31", "type": "buy", "qty": 88, "price_per_unit": 125.46, "fees": 14.95, "value": 11055.43},
+        {"date": "2024-09-05", "type": "buy", "qty": 52, "price_per_unit": 124.41, "fees": 14.95, "value": 6484.27},
+        {"date": "2024-12-10", "type": "sell", "qty": 43, "price_per_unit": 140.96, "fees": 14.95, "value": 6046.33},
+        {"date": "2025-03-18", "type": "sell", "qty": 70, "price_per_unit": 135.50, "fees": 14.95, "value": 9470.05},
+        {"date": "2025-07-22", "type": "buy", "qty": 13, "price_per_unit": 144.06, "fees": 14.95, "value": 1887.73},
+        {"date": "2025-12-08", "type": "sell", "qty": 203, "price_per_unit": 153.916, "fees": 14.95, "value": 31229.92},
+        {"date": "2026-02-10", "type": "buy", "qty": 40, "price_per_unit": 148.78, "fees": 11.00, "value": 5962.20}
+      ],
+      "distributions": [
+        {"date": "2024-04-17", "gross": 172.23, "net": 163.47},
+        {"date": "2024-07-16", "gross": 373.56, "net": 355.53},
+        {"date": "2024-10-16", "gross": 86.98, "net": 86.98},
+        {"date": "2025-01-17", "gross": 186.36, "net": 186.36},
+        {"date": "2025-04-16", "gross": 279.35, "net": 279.35},
+        {"date": "2025-07-16", "gross": 242.95, "net": 242.95},
+        {"date": "2025-10-16", "gross": 74.97, "net": 74.97}
+      ]
+    }
+  ]
+}

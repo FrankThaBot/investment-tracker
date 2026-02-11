@@ -49,15 +49,26 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
   // Refresh prices from APIs
   const refreshPrices = async () => {
     setIsRefreshing(true);
-    const updatedInvestments = [...investments];
     
     try {
+      // Re-read from storage to avoid stale closure
+      const currentInvestments = InvestmentStorage.getInvestments();
+      if (currentInvestments.length === 0) {
+        setIsRefreshing(false);
+        return;
+      }
+      
+      const updatedInvestments = [...currentInvestments];
+      
       // Get symbols that have tickers
-      const symbolsToFetch = investments
+      const symbolsToFetch = currentInvestments
         .filter(inv => inv.ticker)
         .map(inv => PriceService.normalizeSymbol(inv.ticker!, inv.category));
       
       if (symbolsToFetch.length === 0) {
+        // No tickers to fetch, just recalculate
+        setInvestments(updatedInvestments);
+        calculatePortfolio(updatedInvestments);
         setIsRefreshing(false);
         return;
       }
@@ -88,6 +99,14 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
       
     } catch (error) {
       console.error('Error refreshing prices:', error);
+      // Still reload from storage even on error
+      try {
+        const fallback = InvestmentStorage.getInvestments();
+        setInvestments(fallback);
+        calculatePortfolio(fallback);
+      } catch (_) {
+        // ignore
+      }
     } finally {
       setIsRefreshing(false);
     }

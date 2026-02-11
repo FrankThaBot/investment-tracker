@@ -27,7 +27,8 @@ export function InvestmentTable({ investments, onUpdate, onDelete }: InvestmentT
 
   const handleEditSave = (updatedInvestment: Investment) => {
     if (editingInvestment) {
-      onUpdate(editingInvestment.id, updatedInvestment);
+      // Preserve original ID when updating
+      onUpdate(editingInvestment.id, { ...updatedInvestment, id: editingInvestment.id });
     }
     setShowEditDialog(false);
     setEditingInvestment(null);
