@@ -5,13 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Legend } from 'recharts';
-import { TrendingUp, TrendingDown, Plus, RefreshCw, DollarSign, Target, AlertTriangle, Activity } from 'lucide-react';
+import { TrendingUp, TrendingDown, Plus, RefreshCw, DollarSign, Target, AlertTriangle, Activity, Upload } from 'lucide-react';
 import { Investment, Portfolio, CATEGORY_INFO, RISK_LEVELS, MARKET_SCENARIOS } from '@/types/investment';
 import { InvestmentStorage, PortfolioCalculator, HistoricalDataStorage } from '@/lib/storage';
 import { PriceService } from '@/lib/api';
 import { InvestmentForm } from './InvestmentForm';
 import { InvestmentTable } from './InvestmentTable';
 import { MarketScenarioAnalysis } from './MarketScenarioAnalysis';
+import { seedPortfolio } from '@/lib/seed-data';
 
 interface DashboardProps {
   initialInvestments?: Investment[];
@@ -23,13 +24,19 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showAddInvestment, setShowAddInvestment] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string>('');
+  const [seeded, setSeeded] = useState(false);
 
-  // Load investments on component mount
+  // Load investments on component mount - auto-seed if empty
   useEffect(() => {
-    const loadedInvestments = InvestmentStorage.getInvestments();
+    let loadedInvestments = InvestmentStorage.getInvestments();
+    if (loadedInvestments.length === 0 && !seeded) {
+      seedPortfolio();
+      loadedInvestments = InvestmentStorage.getInvestments();
+      setSeeded(true);
+    }
     setInvestments(loadedInvestments);
     calculatePortfolio(loadedInvestments);
-  }, []);
+  }, [seeded]);
 
   // Calculate portfolio metrics
   const calculatePortfolio = (invs: Investment[]) => {
@@ -253,6 +260,21 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Actions</CardTitle>
             <div className="flex space-x-1">
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={() => {
+                  if (window.confirm('Re-import Sharesight data? This replaces all current investments.')) {
+                    seedPortfolio();
+                    const fresh = InvestmentStorage.getInvestments();
+                    setInvestments(fresh);
+                    calculatePortfolio(fresh);
+                  }
+                }}
+                title="Re-import Sharesight data"
+              >
+                <Upload className="h-4 w-4" />
+              </Button>
               <Button 
                 size="sm" 
                 variant="outline" 
