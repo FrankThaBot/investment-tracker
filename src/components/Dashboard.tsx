@@ -82,8 +82,20 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
       
       const priceData = await PriceService.fetchMultiplePrices(symbolsToFetch);
       
+      // Also fetch gold oz AUD and BTC-AUD for derived pricing
+      let goldOzAud: number | null = null;
+      let btcAud: number | null = null;
+      try {
+        const extraResp = await fetch('/api/prices?symbols=GOLD_OZ_AUD');
+        if (extraResp.ok) {
+          const extraData = await extraResp.json();
+          if (extraData['GOLD_OZ_AUD']) goldOzAud = extraData['GOLD_OZ_AUD'].price;
+        }
+      } catch { /* ignore */ }
+
       // Update investments with new prices
       updatedInvestments.forEach((investment, index) => {
+        // Direct ticker lookup
         if (investment.ticker) {
           const normalizedSymbol = PriceService.normalizeSymbol(investment.ticker, investment.category);
           const priceInfo = priceData[normalizedSymbol];
@@ -95,7 +107,32 @@ export function Dashboard({ initialInvestments = [] }: DashboardProps) {
               lastUpdated: priceInfo.lastUpdated,
               dataSource: 'yahoo'
             };
+            // Save BTC-AUD price for IBTC derivation
+            if (normalizedSymbol === 'BTC-AUD') btcAud = priceInfo.price;
           }
+        }
+        
+        // Derived: IBTC tracks ~0.0001 BTC per unit (approximate NAV from BTC price)
+        if (investment.id === 'sharesight_ibtc' && btcAud) {
+          // IBTC NAV roughly tracks BTC. Last known: 520 units @ $9.45 when BTC ~$94k AUD
+          // Ratio: ~0.0001006 BTC per IBTC unit
+          const ibtcPrice = btcAud * 0.0001006;
+          updatedInvestments[index] = {
+            ...investment,
+            currentPrice: ibtcPrice,
+            lastUpdated: new Date().toISOString(),
+            dataSource: 'manual'
+          };
+        }
+        
+        // Derived: Gold per troy oz in AUD
+        if (investment.id === 'sharesight_gold' && goldOzAud) {
+          updatedInvestments[index] = {
+            ...investment,
+            currentPrice: goldOzAud,
+            lastUpdated: new Date().toISOString(),
+            dataSource: 'manual'
+          };
         }
       });
       

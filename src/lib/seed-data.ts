@@ -20,7 +20,7 @@ export const CURRENT_HOLDINGS: Investment[] = [
   {
     id: 'sharesight_vgs',
     assetName: 'Vanguard MSCI Index International',
-    ticker: 'VGS.AX',
+    ticker: 'VGS.AX', // Yahoo Finance: works
     category: 'equity',
     riskLevel: 'moderate',
     marketScenarios: ['growth', 'low-interest'],
@@ -36,7 +36,7 @@ export const CURRENT_HOLDINGS: Investment[] = [
   {
     id: 'sharesight_btc',
     assetName: 'Bitcoin',
-    ticker: 'BTC-AUD',
+    ticker: 'BTC-AUD', // Yahoo Finance: works
     category: 'crypto',
     riskLevel: 'speculative',
     marketScenarios: ['inflation', 'growth'],
@@ -52,7 +52,7 @@ export const CURRENT_HOLDINGS: Investment[] = [
   {
     id: 'sharesight_ibtc',
     assetName: 'Monochrome Bitcoin ETF',
-    ticker: 'IBTC.AX',
+    ticker: '', // Not on Yahoo Finance (CBOE/CXA) - price manually
     category: 'crypto',
     riskLevel: 'risky',
     marketScenarios: ['inflation', 'growth'],
@@ -68,7 +68,7 @@ export const CURRENT_HOLDINGS: Investment[] = [
   {
     id: 'sharesight_gold',
     assetName: 'ABC Bullion - Pool Allocated Gold',
-    ticker: 'GOLD.AX',
+    ticker: '', // ABC Bullion pool allocated gold, priced per oz AUD - not on Yahoo
     category: 'commodity',
     riskLevel: 'moderate',
     marketScenarios: ['inflation', 'stagflation', 'recession', 'high-interest'],

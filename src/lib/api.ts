@@ -1,70 +1,40 @@
 // API utilities for fetching stock and crypto prices
 import { PriceData } from '@/types/investment';
 
-// Yahoo Finance API (unofficial but widely used)
+// Fetch prices via our own Next.js API route (avoids CORS)
 class YahooFinanceAPI {
-  private static readonly BASE_URL = 'https://query1.finance.yahoo.com/v8/finance/chart';
-  // CORS proxy fallback for browser requests
-  private static readonly CORS_PROXY = 'https://corsproxy.io/?';
-  
   static async fetchPrice(symbol: string): Promise<PriceData | null> {
-    try {
-      const directUrl = `${this.BASE_URL}/${symbol}?interval=1d&range=1d`;
-      let response: Response;
-      
-      try {
-        response = await fetch(directUrl);
-      } catch {
-        // CORS blocked - try proxy
-        response = await fetch(`${this.CORS_PROXY}${encodeURIComponent(directUrl)}`);
-      }
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      
-      if (!data.chart?.result?.[0]) {
-        throw new Error('No data returned from Yahoo Finance');
-      }
-      
-      const result = data.chart.result[0];
-      const meta = result.meta;
-      const quote = result.indicators?.quote?.[0];
-      
-      if (!quote || !meta) {
-        throw new Error('Invalid data structure from Yahoo Finance');
-      }
-      
-      const currentPrice = meta.regularMarketPrice || quote.close?.[quote.close.length - 1] || 0;
-      const previousClose = meta.previousClose || 0;
-      const change = currentPrice - previousClose;
-      const changePercent = previousClose > 0 ? (change / previousClose) * 100 : 0;
-      
-      return {
-        symbol,
-        price: currentPrice,
-        change,
-        changePercent,
-        lastUpdated: new Date().toISOString()
-      };
-    } catch (error) {
-      console.error(`Error fetching price for ${symbol}:`, error);
-      return null;
-    }
+    const results = await this.fetchMultiplePrices([symbol]);
+    return results[symbol] || null;
   }
 
   static async fetchMultiplePrices(symbols: string[]): Promise<Record<string, PriceData | null>> {
     const results: Record<string, PriceData | null> = {};
     
-    // Batch requests with delay to avoid rate limiting
-    for (const symbol of symbols) {
-      results[symbol] = await this.fetchPrice(symbol);
+    try {
+      const response = await fetch(`/api/prices?symbols=${encodeURIComponent(symbols.join(','))}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
-      // Add small delay between requests to be respectful
-      if (symbols.indexOf(symbol) < symbols.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 200));
+      const data = await response.json();
+      
+      for (const symbol of symbols) {
+        const info = data[symbol];
+        if (info) {
+          results[symbol] = {
+            symbol,
+            price: info.price,
+            change: info.change,
+            changePercent: info.changePercent,
+            lastUpdated: info.lastUpdated,
+          };
+        } else {
+          results[symbol] = null;
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching prices:', error);
+      for (const symbol of symbols) {
+        results[symbol] = null;
       }
     }
     
