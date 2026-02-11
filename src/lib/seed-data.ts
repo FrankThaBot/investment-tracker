@@ -80,7 +80,7 @@ export const CURRENT_HOLDINGS: Investment[] = [
     currency: 'AUD',
     notes: 'Physical gold (pool allocated) via ABC Bullion. 2 buys: 0.75oz Jan 29, 0.15oz Feb 3, 2026. Priced per troy ounce in AUD.',
     dataSource: 'manual'
-  }
+  },
   {
     id: 'sharesight_cash',
     assetName: 'Cash Reserve',
