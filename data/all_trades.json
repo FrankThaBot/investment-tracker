@@ -1259,5 +1259,17 @@
     "exch_rate": 1.0,
     "currency": "AUD",
     "value": 1078.59
+  },
+  {
+    "date": "2026-02-12",
+    "type": "Buy",
+    "ticker": "BTC",
+    "exchange": "CRYPTO",
+    "name": "Bitcoin",
+    "qty": 0.00395769,
+    "price": 96188.223,
+    "brokerage": 3.81,
+    "currency": "AUD",
+    "value": 384.49
   }
 ]
